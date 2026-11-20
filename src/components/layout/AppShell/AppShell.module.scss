@@ -1,0 +1,110 @@
+.shell {
+  display: flex;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--background);
+}
+
+.sidebar {
+  flex: 0 0 256px;
+  width: 256px;
+  min-width: 0;
+  transition:
+    width 180ms ease,
+    flex-basis 180ms ease;
+}
+
+.shell[data-collapsed="true"] .sidebar {
+  flex-basis: 76px;
+  width: 76px;
+}
+
+.workspace {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.backdrop {
+  display: none;
+}
+
+.sidebarFallback {
+  width: 100%;
+  height: 100%;
+  border-right: 1px solid var(--sidebar-border);
+  background: var(--sidebar);
+}
+
+.topbarFallback {
+  height: 64px;
+  flex: 0 0 64px;
+  border-bottom: 1px solid var(--border);
+  background: var(--background);
+}
+
+.skipLink {
+  position: fixed;
+  z-index: 100;
+  top: 8px;
+  left: 8px;
+  padding: 8px 12px;
+  transform: translateY(-150%);
+  border-radius: 5px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 13px;
+  text-decoration: none;
+
+  &:focus {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    position: fixed;
+    z-index: 60;
+    inset: 0 auto 0 0;
+    width: min(280px, calc(100vw - 48px));
+    max-width: 100%;
+    transform: translateX(-100%);
+    transition: transform 200ms ease;
+  }
+
+  .shell[data-mobile-open="true"] .sidebar {
+    transform: translateX(0);
+  }
+
+  .shell[data-collapsed="true"] .sidebar {
+    width: min(280px, calc(100vw - 48px));
+  }
+
+  .backdrop {
+    position: fixed;
+    z-index: 50;
+    inset: 0;
+    display: block;
+    width: 100%;
+    border: 0;
+    background: rgb(15 23 42 / 38%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease;
+  }
+
+  .shell[data-mobile-open="true"] .backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .backdrop {
+    transition: none;
+  }
+}

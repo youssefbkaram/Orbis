@@ -1,0 +1,2819 @@
+.page {
+  display: grid;
+  gap: 30px;
+  animation: page-enter 420ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.title {
+  margin: 0;
+  color: var(--foreground);
+  font-size: clamp(26px, 3vw, 32px);
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  line-height: 1.15;
+}
+
+.subtitle {
+  margin: 7px 0 0;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.pageActions {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.pageActionsComposer {
+  z-index: 40;
+}
+
+.filterButton,
+.newTaskButton {
+  display: inline-flex;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 11px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.filterMenu {
+  position: relative;
+}
+
+.filterButton {
+  background: var(--background);
+  color: var(--muted-foreground);
+  cursor: pointer;
+  list-style: none;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &:hover {
+    background: var(--muted);
+    color: var(--foreground);
+    border-color: color-mix(in oklch, var(--border) 55%, var(--foreground));
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+.filterPanel {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 7px);
+  right: 0;
+  display: grid;
+  width: min(280px, calc(100vw - 32px));
+  gap: 13px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 14%);
+  transform-origin: top right;
+}
+
+.filterMenu[open] .filterPanel {
+  animation: panel-enter 180ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+.filterField {
+  display: grid;
+  gap: 6px;
+  color: var(--foreground);
+  font-size: 11px;
+  font-weight: 550;
+
+  input,
+  select {
+    width: 100%;
+    min-width: 0;
+    height: 36px;
+    padding: 0 9px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    background: var(--background);
+    color: var(--foreground);
+    font: inherit;
+    font-size: 12px;
+    transition:
+      border-color 150ms ease,
+      box-shadow 150ms ease,
+      background-color 150ms ease;
+  }
+
+  input:focus,
+  select:focus {
+    border-color: var(--ring);
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 20%, transparent);
+  }
+}
+
+.priorityFilter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--foreground);
+  font-size: 11px;
+  cursor: pointer;
+
+  input {
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    accent-color: var(--primary);
+  }
+}
+
+.newTaskButton {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  text-decoration: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    transform 160ms ease,
+    box-shadow 180ms ease,
+    filter 160ms ease;
+
+  &:hover {
+    filter: brightness(1.12);
+    box-shadow: 0 5px 14px color-mix(in oklch, var(--primary) 25%, transparent);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    box-shadow: none;
+    transform: translateY(0) scale(0.98);
+  }
+
+  &:hover > svg {
+    transform: rotate(90deg);
+  }
+
+  > svg {
+    transition: transform 180ms cubic-bezier(0.2, 0.75, 0.25, 1);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  kbd {
+    margin-left: 3px;
+    padding: 2px 5px;
+    border-radius: 2px;
+    background: rgb(255 255 255 / 18%);
+    font: inherit;
+    font-size: 10px;
+  }
+}
+
+.viewBar {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.taskViews {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: clamp(12px, 2vw, 24px);
+  overflow-x: auto;
+}
+
+.taskView {
+  display: inline-flex;
+  min-height: 38px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 7px;
+  border-bottom: 2px solid transparent;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  white-space: nowrap;
+  padding: 0;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    color 180ms ease,
+    border-color 220ms cubic-bezier(0.2, 0.75, 0.25, 1),
+    transform 160ms ease;
+
+  &:hover {
+    color: var(--foreground);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  &:focus-visible {
+    border-radius: 3px;
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+.taskViewActive {
+  border-bottom-color: var(--foreground);
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.taskViewActive .viewCount {
+  animation: count-pop 240ms cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.viewCount {
+  padding: 2px 5px;
+  border-radius: 3px;
+  background: var(--accent);
+  color: var(--foreground);
+  font-size: 10px;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.viewTotal {
+  font-size: 10px;
+  transition: color 180ms ease;
+}
+
+.autoSchedule {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 3px;
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  font-size: 10px;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    background-color 170ms ease,
+    transform 170ms ease,
+    box-shadow 170ms ease,
+    opacity 170ms ease;
+
+  > svg:first-child {
+    color: var(--primary);
+  }
+
+  &:hover {
+    background: var(--accent);
+    box-shadow: 0 3px 10px rgb(0 0 0 / 7%);
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    box-shadow: none;
+    transform: scale(0.98);
+  }
+
+  &:hover > svg:first-child {
+    animation: sparkle 650ms ease-in-out;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.viewDivider {
+  color: var(--muted-foreground);
+}
+
+.autoScheduleAction {
+  font-weight: 600;
+}
+
+.autoScheduleArrow {
+  display: none;
+}
+
+.taskGroups {
+  display: grid;
+  gap: 25px;
+}
+
+.taskGroup {
+  min-width: 0;
+  background: transparent;
+  animation: group-enter 340ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+.taskGroupDragOver {
+  border-radius: 7px;
+  background: color-mix(in oklch, var(--primary) 5%, transparent);
+  outline: 1px dashed color-mix(in oklch, var(--primary) 45%, transparent);
+  outline-offset: 5px;
+
+  &:nth-child(2) {
+    animation-delay: 45ms;
+  }
+
+  &:nth-child(3) {
+    animation-delay: 90ms;
+  }
+
+  &:nth-child(4) {
+    animation-delay: 135ms;
+  }
+}
+
+.groupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 0 8px;
+}
+
+.groupTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+
+  h2 {
+    margin: 0;
+    color: var(--foreground);
+    font-size: 13px;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+  }
+
+  > span {
+    color: var(--muted-foreground);
+    font-size: 10px;
+  }
+}
+
+.groupSummary {
+  color: var(--muted-foreground);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.taskList {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--border);
+  list-style: none;
+}
+
+.groupAddTask {
+  display: flex;
+  width: 100%;
+  min-height: 38px;
+  align-items: center;
+  gap: 9px;
+  padding: 0 3px;
+  border: 0;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
+
+  svg {
+    color: var(--primary);
+    stroke-width: 1.5;
+  }
+
+  &:hover {
+    color: var(--foreground);
+  }
+
+  &:focus-visible {
+    border-radius: 4px;
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+.taskRow {
+  position: relative;
+  display: block;
+  min-width: 0;
+  padding: 0 3px;
+  border-bottom: 1px solid color-mix(in oklch, var(--border) 68%, transparent);
+  animation: row-enter 320ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+  animation-delay: calc(min(var(--row-index, 0), 8) * 28ms);
+  transition:
+    background-color 170ms ease,
+    opacity 170ms ease,
+    transform 170ms ease;
+
+  &:hover {
+    background: color-mix(in oklch, var(--muted) 55%, transparent);
+  }
+
+  &:focus-within {
+    background: color-mix(in oklch, var(--muted) 55%, transparent);
+  }
+}
+
+.taskRowLine {
+  position: relative;
+  display: flex;
+  min-height: 47px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 7px 0;
+}
+
+.taskDragHandle,
+.subtaskDragHandle {
+  display: grid;
+  width: 16px;
+  height: 24px;
+  flex: 0 0 16px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: grab;
+  opacity: 0;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease,
+    opacity 140ms ease;
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: var(--muted);
+    color: var(--foreground);
+    opacity: 1;
+    outline: none;
+  }
+}
+
+.taskRow:hover .taskDragHandle,
+.taskRow:focus-within .taskDragHandle,
+.taskInlineSubtask:hover .subtaskDragHandle,
+.taskInlineSubtask:focus-within .subtaskDragHandle {
+  opacity: 1;
+}
+
+.taskDropBefore::before,
+.taskDropAfter::after {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  left: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--primary);
+  content: "";
+  pointer-events: none;
+}
+
+.taskDropBefore::before {
+  top: -1px;
+}
+
+.taskDropAfter::after {
+  bottom: -1px;
+}
+
+.taskDropInside > .taskRowLine {
+  border-radius: 6px;
+  background: color-mix(in oklch, var(--primary) 8%, transparent);
+  outline: 1px solid color-mix(in oklch, var(--primary) 38%, transparent);
+}
+
+.taskSubtaskToggle,
+.taskSubtaskToggleSpacer {
+  display: grid;
+  width: 16px;
+  height: 22px;
+  flex: 0 0 16px;
+  place-items: center;
+}
+
+.taskSubtaskToggle {
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
+
+  &:hover {
+    background: var(--muted);
+    color: var(--foreground);
+  }
+
+  svg {
+    transition: transform 170ms ease;
+  }
+}
+
+.taskSubtaskToggleCollapsed {
+  transform: rotate(-90deg);
+}
+
+.taskRowPending {
+  opacity: 0.62;
+  pointer-events: none;
+}
+
+.taskMain {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  gap: 10px;
+}
+
+.taskOpen,
+.taskMetaOpen {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.taskOpen {
+  display: flex;
+  flex: 1;
+  min-height: 32px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  overflow: hidden;
+  text-align: left;
+
+  &:focus-visible {
+    border-radius: 3px;
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+}
+
+.taskOpenHeading {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+.taskSubtaskCount {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 1;
+
+  svg {
+    flex: 0 0 auto;
+  }
+}
+
+.taskInlineSubtasks {
+  margin: 0 0 0 52px;
+  padding: 0;
+  list-style: none;
+  animation: panel-enter 160ms ease-out both;
+}
+
+.taskInlineSubtask {
+  position: relative;
+  display: flex;
+  min-height: 43px;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  transition: background-color 140ms ease;
+
+  &:hover,
+  &:focus-within {
+    background: color-mix(in oklch, var(--muted) 55%, transparent);
+  }
+
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: -52px;
+    border-top: 1px solid color-mix(in oklch, var(--border) 68%, transparent);
+    content: "";
+  }
+
+  &:has(.subtaskDragHandle:active) {
+    opacity: 0.55;
+  }
+
+  .subtaskDragHandle {
+    width: 16px;
+    flex-basis: 16px;
+    margin-left: -22px;
+  }
+
+  input {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 auto;
+    margin: 0 0 0 1px;
+    accent-color: var(--primary);
+    cursor: pointer;
+  }
+}
+
+.taskInlineSubtaskTitle {
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 12px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:focus-visible {
+    border-radius: 3px;
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+}
+
+.taskInlineSubtaskCompleted {
+  color: var(--muted-foreground);
+  text-decoration: line-through;
+}
+
+.taskMetaOpen {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  border-radius: 4px;
+
+  &:focus-visible,
+  &:focus-visible .taskOpen {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+}
+
+.checkbox {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  appearance: none;
+  border: 1.5px solid var(--muted-foreground);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    transform 180ms cubic-bezier(0.2, 0.75, 0.25, 1),
+    box-shadow 150ms ease;
+
+  &[data-priority="p1"] {
+    border-color: #d04444;
+    background: color-mix(in srgb, #d04444 10%, transparent);
+  }
+
+  &[data-priority="p2"] {
+    border-color: #d87924;
+    background: color-mix(in srgb, #d87924 10%, transparent);
+  }
+
+  &[data-priority="p3"] {
+    border-color: #477bc2;
+    background: color-mix(in srgb, #477bc2 10%, transparent);
+  }
+
+  &[data-priority="p4"] {
+    border-color: var(--muted-foreground);
+    background: transparent;
+  }
+
+  &:checked {
+    border-color: var(--primary);
+    background: color-mix(in srgb, var(--primary) 18%, transparent);
+    box-shadow: inset 0 0 0 3px var(--card);
+  }
+
+  &:hover {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--foreground) 7%, transparent);
+    transform: scale(1.15);
+  }
+
+  &:checked:hover {
+    box-shadow:
+      inset 0 0 0 3px var(--card),
+      0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  &:disabled {
+    cursor: wait;
+  }
+}
+
+.checkboxCompleted {
+  animation: checkbox-pop 240ms cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.taskTitle {
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition:
+    color 220ms ease,
+    opacity 220ms ease;
+}
+
+.completedTask {
+  color: var(--muted-foreground);
+  text-decoration: line-through;
+}
+
+.project {
+  overflow: hidden;
+  flex: 0 1 auto;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.taskMeta {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.inboxLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+
+  svg {
+    opacity: 0.8;
+  }
+}
+
+.taskTime,
+.due {
+  color: var(--muted-foreground);
+}
+
+.priorityDue {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--destructive);
+  font-weight: 600;
+}
+
+.statusMessage {
+  margin: -18px 0 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  animation: message-enter 200ms ease-out both;
+}
+
+.taskToast {
+  position: fixed;
+  inset: auto;
+  z-index: 1000;
+  bottom: 20px;
+  left: 20px;
+  width: min(420px, calc(100vw - 40px));
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: 0 14px 40px rgb(0 0 0 / 20%);
+  animation: task-toast-enter 240ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+.taskToastClosing {
+  animation: task-toast-exit 220ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+.taskToastContent {
+  display: flex;
+  min-height: 56px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+
+  p {
+    min-width: 0;
+    flex: 1;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}
+
+.taskToastSuccess {
+  flex: 0 0 auto;
+  color: #26865b;
+}
+
+.taskToastInfo {
+  flex: 0 0 auto;
+  color: var(--primary);
+}
+
+.taskToastUndo,
+.taskToastUndo:focus-visible,
+.taskToastClose:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.taskToastClose {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.taskToastUndo {
+  gap: 5px;
+  padding: 7px 8px;
+  border-radius: 5px;
+  color: var(--primary);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+
+  &:hover {
+    background: color-mix(in oklch, var(--primary) 10%, transparent);
+  }
+}
+
+.taskToastClose {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 5px;
+  color: var(--muted-foreground);
+
+  &:hover {
+    background: var(--muted);
+    color: var(--foreground);
+  }
+
+}
+
+.taskToastTimer {
+  display: block;
+  width: 0;
+  height: 3px;
+  background: var(--primary);
+  animation: task-toast-time var(--toast-duration, 5000ms) linear both;
+}
+
+.emptyState {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 52px 18px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  text-align: center;
+  animation: empty-enter 360ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+
+  h2 {
+    margin: 0;
+    color: var(--foreground);
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  p {
+    max-width: 360px;
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+}
+
+.taskDialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(1020px, calc(100vw - 32px));
+  max-width: none;
+  height: fit-content;
+  min-height: 480px;
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  overflow: visible;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: 0 24px 80px rgb(0 0 0 / 24%);
+  animation: task-dialog-enter 190ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+
+  &::backdrop {
+    background: rgb(13 17 24 / 42%);
+    backdrop-filter: blur(2px);
+    animation: task-backdrop-enter 190ms ease-out both;
+  }
+}
+
+.deleteConfirmDialog {
+  position: fixed;
+  inset: 0;
+  width: min(420px, calc(100vw - 32px));
+  max-width: none;
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: 0 24px 80px rgb(0 0 0 / 28%);
+  animation: delete-dialog-enter 170ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+
+  &::backdrop {
+    background: rgb(10 14 22 / 34%);
+    backdrop-filter: blur(2px);
+  }
+}
+
+.deleteConfirmContent {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
+  padding: 22px;
+}
+
+.deleteConfirmIcon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 50%;
+  background: color-mix(in oklch, var(--destructive) 10%, transparent);
+  color: var(--destructive);
+}
+
+.deleteConfirmCopy {
+  h2 {
+    margin: 1px 0 6px;
+    color: var(--foreground);
+    font-size: 16px;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+}
+
+.deleteConfirmActions {
+  display: flex;
+  grid-column: 1 / -1;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 6px;
+
+  button {
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 550;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      cursor: wait;
+      opacity: 0.65;
+    }
+  }
+}
+
+.deleteConfirmCancel {
+  background: var(--card);
+  color: var(--foreground);
+
+  &:hover {
+    background: var(--muted);
+  }
+}
+
+.deleteConfirmSubmit {
+  border-color: var(--destructive) !important;
+  background: var(--destructive);
+  color: var(--destructive-foreground);
+
+  &:hover:not(:disabled) {
+    filter: brightness(0.95);
+  }
+}
+
+.taskDetails {
+  display: grid;
+  grid-template-rows: auto auto auto;
+}
+
+.taskDialogHeader {
+  display: flex;
+  min-height: 49px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.taskDialogProject {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  color: var(--foreground);
+  font-size: 11px;
+  font-weight: 600;
+
+  svg {
+    color: var(--muted-foreground);
+  }
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.taskDialogHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.taskSaveStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 6px;
+  color: var(--muted-foreground);
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.taskSaveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: save-pulse 800ms ease-in-out infinite alternate;
+}
+
+.taskDialogIconButton {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+
+  &:hover:not(:disabled) {
+    background: var(--muted);
+    color: var(--foreground);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.35;
+  }
+}
+
+.taskMoreWrap {
+  position: relative;
+}
+
+.taskActionsMenu {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 6px);
+  right: 0;
+  display: grid;
+  width: 230px;
+  gap: 2px;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  box-shadow: 0 12px 30px rgb(0 0 0 / 16%);
+  animation: panel-enter 150ms ease-out both;
+
+  button {
+    display: flex;
+    min-height: 34px;
+    align-items: center;
+    gap: 9px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
+    color: var(--foreground);
+    font: inherit;
+    font-size: 11px;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--muted);
+    }
+
+    svg {
+      color: var(--muted-foreground);
+    }
+
+    kbd {
+      margin-left: auto;
+      color: var(--muted-foreground);
+      font: inherit;
+      font-size: 9px;
+    }
+  }
+
+  .taskDeleteAction {
+    color: var(--destructive);
+
+    svg {
+      color: var(--destructive);
+    }
+  }
+}
+
+.taskMenuDivider {
+  height: 1px;
+  margin: 4px 0;
+  background: var(--border);
+}
+
+.taskDialogNotice {
+  padding: 0 16px 10px;
+
+  > p {
+    margin: 0;
+    color: var(--destructive);
+    font-size: 10px;
+  }
+}
+
+.taskActivity,
+.taskDeleteConfirm {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 10px;
+
+  strong,
+  > span:first-child {
+    color: var(--foreground);
+  }
+
+  button {
+    margin-left: auto;
+    padding: 4px 7px;
+    border: 0;
+    border-radius: 4px;
+    background: var(--background);
+    color: var(--foreground);
+    font: inherit;
+    cursor: pointer;
+  }
+}
+
+.taskActivity {
+  position: relative;
+  justify-content: flex-start;
+
+  button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: grid;
+    width: 22px;
+    height: 22px;
+    place-items: center;
+    padding: 0;
+  }
+}
+
+.taskDeleteConfirm {
+  flex-wrap: wrap;
+  border-color: color-mix(in oklch, var(--destructive) 35%, var(--border));
+
+  button:last-child {
+    margin-left: 0;
+    background: var(--destructive);
+    color: white;
+  }
+}
+
+.taskDialogClose {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+
+  &:hover {
+    background: var(--muted);
+    color: var(--foreground);
+  }
+}
+
+.taskDialogBody {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 290px;
+  overflow: visible;
+}
+
+.taskDetailsMain {
+  min-width: 0;
+  padding: 30px;
+}
+
+.taskDetailsTitleRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.taskDetailsCheck {
+  display: grid;
+  width: 19px;
+  height: 19px;
+  flex: 0 0 auto;
+  place-items: center;
+  margin-top: 6px;
+  padding: 0;
+  border: 1.5px solid var(--muted-foreground);
+  border-radius: 50%;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    transform 140ms ease;
+
+  &:hover {
+    border-color: var(--primary);
+    transform: scale(1.08);
+  }
+}
+
+.taskDetailsCheckCompleted {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+.taskDetailsTitle {
+  width: 100%;
+  min-width: 0;
+  padding: 2px 0 7px;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  outline: none;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: clamp(20px, 2.5vw, 25px);
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  line-height: 1.4;
+
+  &:focus {
+    border-bottom-color: var(--border);
+  }
+
+  &::placeholder {
+    color: var(--muted-foreground);
+  }
+}
+
+.taskDescriptionSection {
+  margin: 14px 0 26px 31px;
+
+  textarea {
+    width: 100%;
+    min-height: 26px;
+    resize: none;
+    padding: 2px 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--foreground);
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.6;
+
+    &::placeholder {
+      color: var(--muted-foreground);
+    }
+  }
+}
+
+.subtasksSection {
+  margin-left: 31px;
+}
+
+.subtasksHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 0 7px;
+  border-bottom: 1px solid var(--border);
+
+  .subtasksCount {
+    margin-left: -2px;
+    color: var(--muted-foreground);
+    font-size: 10px;
+  }
+}
+
+.subtaskToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+
+  svg {
+    transition: transform 140ms ease;
+  }
+
+  > span {
+    color: var(--foreground);
+    font-size: 13px;
+    font-weight: 600;
+  }
+}
+
+.subtaskToggleCollapsed {
+  transform: rotate(-90deg);
+}
+
+.subtaskList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.subtaskItem {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 3px;
+  border-bottom: 1px solid color-mix(in oklch, var(--border) 65%, transparent);
+
+  > input {
+    width: 15px;
+    height: 15px;
+    flex: 0 0 auto;
+    margin: 0;
+    accent-color: var(--primary);
+  }
+
+  > span {
+    flex: 1;
+    color: var(--foreground);
+    font-size: 13px;
+  }
+}
+
+.subtaskCompleted {
+  color: var(--muted-foreground) !important;
+  text-decoration: line-through;
+}
+
+.subtaskMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--muted-foreground);
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.subtaskDelete {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 140ms ease,
+    background-color 140ms ease,
+    color 140ms ease;
+
+  &:hover {
+    background: var(--muted);
+    color: var(--destructive);
+  }
+}
+
+.subtaskItem:hover .subtaskDelete,
+.subtaskDelete:focus-visible {
+  opacity: 1;
+}
+
+.subtasksMessage {
+  margin: 0;
+  padding: 13px 3px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+
+.addSubtaskButton {
+  display: flex;
+  width: 100%;
+  min-height: 42px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 3px;
+  border: 0;
+  border-bottom: 1px solid color-mix(in oklch, var(--border) 65%, transparent);
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+
+  svg {
+    color: var(--primary);
+  }
+
+  &:hover {
+    color: var(--foreground);
+  }
+
+  &:focus-visible {
+    border-radius: 3px;
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+.subtasksSection > .inlineComposer {
+  margin-top: 4px;
+}
+
+.subtasksSection {
+  .inlineComposer {
+    padding: 10px;
+  }
+
+  .subtaskComposer {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    max-width: none;
+    margin-top: 8px;
+    box-shadow: none;
+  }
+}
+
+.taskProperties {
+  display: grid;
+  align-content: start;
+  gap: 0;
+  padding: 16px 22px;
+  border-left: 1px solid var(--border);
+  background: color-mix(in oklch, var(--muted) 32%, var(--card));
+}
+
+.taskProperty {
+  display: grid;
+  gap: 6px;
+  padding: 14px 0;
+  border-bottom: 1px solid color-mix(in oklch, var(--border) 75%, transparent);
+
+  > span:first-child {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--muted-foreground);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+}
+
+.taskPropertyValue {
+  display: flex;
+  min-width: 0;
+  min-height: 36px;
+  align-items: center;
+  gap: 7px;
+  padding: 0 7px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: var(--muted-foreground);
+
+  &:focus-within,
+  &:hover {
+    border-color: var(--border);
+    background: var(--card);
+  }
+
+  > svg {
+    flex: 0 0 auto;
+  }
+
+  input {
+    width: 100%;
+    min-width: 0;
+    padding: 5px 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--foreground);
+    font: inherit;
+    font-size: 12px;
+
+    &::placeholder {
+      color: var(--muted-foreground);
+    }
+  }
+}
+
+.inlineComposer {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  box-shadow: 0 5px 18px rgb(0 0 0 / 5%);
+  animation: composer-enter 220ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+  .inlineComposerClosing {
+    pointer-events: none;
+    animation: composer-exit 150ms ease-in both;
+  }
+
+  .composerInputWrap {
+    position: relative;
+    display: block;
+    min-width: 0;
+    height: 23px;
+
+    input,
+    .composerHighlight {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      min-width: 0;
+      padding: 3px 2px;
+      border: 0;
+      font: inherit;
+      font-size: 14px;
+      line-height: 17px;
+      white-space: pre;
+    }
+
+    .composerHighlight {
+      overflow: hidden;
+      color: var(--foreground);
+      pointer-events: none;
+    }
+
+    input {
+      outline: none;
+      background: transparent;
+      color: transparent;
+      caret-color: var(--foreground);
+      overflow-x: auto;
+      z-index: 1;
+      -webkit-text-fill-color: transparent;
+
+      &::placeholder {
+        color: var(--muted-foreground);
+        opacity: 0.8;
+        -webkit-text-fill-color: var(--muted-foreground);
+      }
+
+      &::selection {
+        background: color-mix(in oklch, var(--primary) 25%, transparent);
+      }
+    }
+
+  }
+
+  .composerHighlight mark {
+    padding: 1px 2px;
+    border-radius: 3px;
+    color: inherit;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  .commandHighlightDate {
+    background: color-mix(in oklch, #2e9c61 17%, transparent);
+  }
+
+  .commandHighlightPriority {
+    background: color-mix(in oklch, #d87924 20%, transparent);
+  }
+
+  .commandHighlightProject {
+    background: color-mix(in oklch, #477bc2 18%, transparent);
+}
+
+.composerHint {
+  margin: -5px 0 0;
+  color: var(--destructive);
+  font-size: 10px;
+}
+
+.composerTools,
+.composerToolbar,
+.composerActions {
+  display: flex;
+  align-items: center;
+}
+
+.composerTools {
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
+  gap: 4px;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.composerDatePriority {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.composerToolbar {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.composerTool,
+.priorityPicker {
+  position: relative;
+  display: inline-flex;
+  min-height: 29px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 7px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--background);
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 10px;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    color 150ms ease,
+    background-color 150ms ease;
+
+  &:hover,
+  &:focus-within {
+    border-color: color-mix(in oklch, var(--border) 60%, var(--foreground));
+    color: var(--foreground);
+  }
+}
+
+.composerToolSelected {
+  border-color: color-mix(in oklch, #2e9c61 35%, var(--border));
+  background: color-mix(in oklch, #2e9c61 9%, var(--background));
+  color: #2e9c61;
+}
+
+.dateToolWrap {
+  position: relative;
+}
+
+.priorityPicker {
+  padding-right: 9px;
+  font-weight: 650;
+
+  &[data-priority="p1"] {
+    color: #d04444;
+  }
+
+  &[data-priority="p2"] {
+    color: #d87924;
+  }
+
+  &[data-priority="p3"] {
+    color: #477bc2;
+  }
+}
+
+.datePopover {
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 6px);
+  left: 0;
+  display: grid;
+  width: min(322px, calc(100vw - 40px));
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--card);
+  box-shadow: 0 12px 30px rgb(0 0 0 / 14%);
+  animation: panel-enter 160ms ease-out both;
+  transform-origin: top left;
+}
+
+.datePresets {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.datePreset,
+.clearDate {
+  display: flex;
+  min-width: 0;
+  min-height: 34px;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 6px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 10px;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover,
+  &[aria-pressed="true"] {
+    background: var(--muted);
+  }
+
+  svg {
+    flex: 0 0 auto;
+    color: var(--muted-foreground);
+  }
+
+  span {
+    flex: 1;
+    white-space: nowrap;
+  }
+
+  small {
+    color: var(--muted-foreground);
+    font-size: 9px;
+    white-space: nowrap;
+  }
+}
+
+.clearDate {
+  min-height: 27px;
+  justify-content: center;
+  color: var(--muted-foreground);
+}
+
+.datePopoverTime {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 5px 2px;
+  border-top: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 11px;
+
+  input {
+    min-height: 32px;
+    padding: 4px 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    outline: none;
+    background: var(--background);
+    color: var(--foreground);
+    font: inherit;
+    color-scheme: light dark;
+
+    &:focus {
+      border-color: var(--ring);
+      box-shadow: 0 0 0 2px color-mix(in oklch, var(--ring) 16%, transparent);
+    }
+  }
+}
+
+.datePopoverWithTime {
+  grid-template-rows: 1fr auto;
+}
+
+.datePopoverPortal {
+  position: fixed;
+  z-index: 1000;
+  right: auto;
+  bottom: auto;
+}
+
+.calendar {
+  min-width: 0;
+  padding-left: 9px;
+  border-left: 1px solid var(--border);
+}
+
+.calendarHeader {
+  display: flex;
+  min-height: 30px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  margin-bottom: 5px;
+
+  strong {
+    color: var(--foreground);
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  > div {
+    display: flex;
+    gap: 2px;
+  }
+
+  button {
+    display: grid;
+    width: 24px;
+    height: 24px;
+    place-items: center;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--muted-foreground);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--muted);
+      color: var(--foreground);
+    }
+  }
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+}
+
+.calendarWeekday {
+  display: grid;
+  height: 22px;
+  place-items: center;
+  color: var(--muted-foreground);
+  font-size: 9px;
+}
+
+.calendarDay {
+  display: grid;
+  aspect-ratio: 1;
+  min-width: 0;
+  place-items: center;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 9px;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease;
+
+  &:hover {
+    background: var(--muted);
+  }
+}
+
+.calendarDayOutside {
+  color: var(--muted-foreground);
+  opacity: 0.55;
+}
+
+.calendarDayToday {
+  border-color: color-mix(in oklch, var(--primary) 55%, transparent);
+}
+
+.calendarDaySelected {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  opacity: 1;
+}
+
+.priorityWrap {
+  position: relative;
+}
+
+.priorityMenu {
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 6px);
+  left: 0;
+  display: grid;
+  width: 190px;
+  gap: 3px;
+  padding: 5px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  box-shadow: 0 10px 24px rgb(0 0 0 / 13%);
+  animation: panel-enter 160ms ease-out both;
+  transform-origin: top left;
+}
+
+.priorityMenuPortal {
+  position: fixed;
+  z-index: 1000;
+  right: auto;
+  bottom: auto;
+  width: min(190px, calc(100vw - 16px));
+}
+
+.priorityMenuDialog {
+  position: absolute;
+  z-index: 1000;
+  right: auto;
+  bottom: auto;
+  width: min(190px, calc(100vw - 16px));
+}
+
+.taskDatePicker {
+  width: 100%;
+}
+
+.taskDateTrigger {
+  width: 100%;
+  min-height: 36px;
+  justify-content: flex-start;
+  padding: 0 8px;
+  text-align: left;
+}
+
+.datePopoverDialog {
+  position: absolute;
+  z-index: 1000;
+  right: auto;
+  bottom: auto;
+  width: min(322px, calc(100vw - 32px));
+}
+
+.taskNotesSection {
+  margin: 28px 0 0 31px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+
+  textarea {
+    display: block;
+    width: 100%;
+    min-height: 112px;
+    margin-top: 12px;
+    padding: 13px 14px;
+    resize: vertical;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    background: color-mix(in oklch, var(--muted) 24%, var(--card));
+    color: var(--foreground);
+    font: inherit;
+    font-size: 13px;
+    line-height: 1.65;
+    transition:
+      border-color 140ms ease,
+      box-shadow 140ms ease,
+      background-color 140ms ease;
+
+    &:focus {
+      border-color: var(--ring);
+      background: var(--card);
+      box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 16%, transparent);
+    }
+
+    &::placeholder {
+      color: var(--muted-foreground);
+    }
+  }
+}
+
+.taskNotesHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  > svg {
+    color: var(--primary);
+  }
+
+  h3 {
+    margin: 0;
+    color: var(--foreground);
+    font-size: 13px;
+    font-weight: 650;
+  }
+
+  span {
+    margin-left: auto;
+    color: var(--muted-foreground);
+    font-size: 10px;
+  }
+}
+
+.projectMenu {
+  position: absolute;
+  z-index: 60;
+  display: grid;
+  width: min(224px, calc(100vw - 16px));
+  gap: 3px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--card);
+  box-shadow: 0 12px 30px rgb(0 0 0 / 14%);
+  animation: panel-enter 160ms ease-out both;
+  transform-origin: top left;
+}
+
+.projectMenuPortal {
+  position: fixed;
+  z-index: 1000;
+  right: auto;
+  bottom: auto;
+}
+
+.projectMenuDialog {
+  position: absolute;
+  z-index: 1000;
+  right: auto;
+  bottom: auto;
+}
+
+.projectMenuHeading {
+  margin: 3px 7px 5px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+.projectOption {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 11px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+
+  &:hover,
+  &[aria-selected="true"] {
+    background: var(--muted);
+  }
+
+  > svg:first-child {
+    color: var(--muted-foreground);
+  }
+
+  > span {
+    flex: 1;
+  }
+
+  > svg:last-child:not(:first-child) {
+    color: var(--primary);
+  }
+}
+
+.projectMenuHint {
+  margin: 5px 7px 3px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 1.5;
+
+  kbd {
+    padding: 1px 4px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--foreground);
+    font: inherit;
+  }
+}
+
+.priorityOption {
+  display: flex;
+  min-height: 32px;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 11px;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover,
+  &[aria-selected="true"] {
+    background: var(--muted);
+  }
+
+  span {
+    flex: 1;
+  }
+
+  small {
+    color: var(--muted-foreground);
+    font-size: 9px;
+  }
+}
+
+.popoverClosing {
+  pointer-events: none;
+  animation: panel-exit 140ms ease-in both;
+}
+
+.savingLabel {
+  color: var(--muted-foreground);
+  font-size: 9px;
+  font-style: italic;
+}
+
+.composerActions {
+  flex: 0 0 auto;
+  gap: 6px;
+}
+
+.inlineComposer {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 9px);
+  right: 0;
+  width: min(580px, calc(100vw - 32px));
+  box-shadow:
+    0 12px 32px rgb(0 0 0 / 12%),
+    0 2px 6px rgb(0 0 0 / 5%);
+}
+
+.composerCancel,
+.composerSubmit {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  transition:
+    transform 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease,
+    opacity 150ms ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.94);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+}
+
+.composerCancel {
+  background: transparent;
+  color: var(--muted-foreground);
+
+  &:hover:not(:disabled) {
+    background: var(--muted);
+    color: var(--foreground);
+  }
+}
+
+.composerSubmit {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes group-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes row-enter {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes panel-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-5px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes message-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes task-toast-enter {
+  from {
+    opacity: 0;
+    transform: translateX(calc(-100% - 24px));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes task-toast-exit {
+  to {
+    opacity: 0;
+    transform: translateX(calc(-100% - 24px));
+  }
+}
+
+@keyframes task-toast-time {
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes delete-dialog-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes empty-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes checkbox-pop {
+  50% {
+    transform: scale(1.3);
+  }
+}
+
+@keyframes count-pop {
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes sparkle {
+  35% {
+    transform: rotate(-12deg) scale(1.15);
+  }
+
+  70% {
+    transform: rotate(12deg) scale(1.1);
+  }
+}
+
+@keyframes composer-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes task-dialog-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes task-backdrop-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes save-pulse {
+  to {
+    opacity: 0.35;
+  }
+}
+
+@keyframes composer-exit {
+  to {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.99);
+  }
+}
+
+@keyframes panel-exit {
+  to {
+    opacity: 0;
+    transform: translateY(-3px) scale(0.98);
+  }
+}
+
+@media (max-width: 900px) {
+  .page {
+    gap: 24px;
+  }
+
+  .viewBar {
+    flex-wrap: wrap;
+    padding-bottom: 8px;
+  }
+
+  .taskViews {
+    width: 100%;
+  }
+
+  .taskView {
+    min-height: 34px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page {
+    gap: 22px;
+  }
+
+  .pageHeader {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .pageActions {
+    width: 100%;
+  }
+
+  .pageActionsComposer {
+    z-index: 40;
+  }
+
+  .filterMenu {
+    flex: 0 0 auto;
+  }
+
+  .filterButton,
+  .newTaskButton {
+    flex: 1;
+  }
+
+  .viewBar {
+    gap: 10px;
+  }
+
+  .autoSchedule {
+    max-width: 100%;
+  }
+
+  .groupHeader {
+    align-items: flex-start;
+  }
+
+  .taskRow {
+    align-items: flex-start;
+    gap: 8px;
+    padding: 0 2px;
+  }
+
+  .taskRowLine {
+    min-height: 46px;
+    gap: 8px;
+    padding: 8px 0;
+  }
+
+  .taskMain {
+    align-items: center;
+    gap: 8px;
+  }
+
+  .taskInlineSubtasks {
+    margin-left: 48px;
+  }
+
+  .taskInlineSubtask::before {
+    left: -48px;
+  }
+
+  .checkbox {
+    margin-top: 2px;
+  }
+
+  .taskTitle {
+    display: -webkit-box;
+    overflow: hidden;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .project,
+  .taskTime {
+    display: none;
+  }
+
+  .taskMeta {
+    gap: 6px;
+    padding-top: 1px;
+    font-size: 9px;
+  }
+
+  .taskDialog {
+    width: calc(100vw - 24px);
+    max-height: calc(100dvh - 24px);
+    min-height: 0;
+  }
+
+  .taskDialogBody {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .taskDetailsMain {
+    padding: 18px 16px;
+  }
+
+  .taskDialogHeader {
+    gap: 5px;
+    padding-right: 8px;
+    padding-left: 12px;
+  }
+
+  .taskDialogHeaderActions {
+    gap: 1px;
+  }
+
+  .taskSaveStatus {
+    margin-right: 2px;
+    font-size: 8px;
+  }
+
+  .taskProperties {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 14px;
+    padding: 8px 16px 14px;
+    border-top: 1px solid var(--border);
+    border-left: 0;
+  }
+
+  .taskProperty:nth-child(5),
+  .taskProperty:nth-child(6),
+  .taskProperty:nth-child(7) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (hover: none) {
+  .taskDragHandle,
+  .subtaskDragHandle {
+    opacity: 0.75;
+  }
+}
+
+@media (max-width: 380px) {
+  .autoSchedule {
+    gap: 4px;
+    padding: 6px;
+    font-size: 9px;
+  }
+
+  .autoScheduleArrow {
+    display: block;
+  }
+
+  .composerToolbar {
+    align-items: flex-end;
+  }
+
+  .composerTool,
+  .priorityPicker {
+    min-height: 28px;
+    padding-right: 6px;
+    padding-left: 6px;
+    font-size: 9px;
+  }
+
+  .datePopover {
+    width: min(300px, calc(100vw - 40px));
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 6px;
+    padding: 7px;
+  }
+
+  .taskToast {
+    bottom: 12px;
+    left: 12px;
+    width: calc(100vw - 24px);
+  }
+
+  .taskToastContent {
+    gap: 7px;
+    padding-right: 8px;
+    padding-left: 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page,
+  .taskGroup,
+  .taskRow,
+  .taskInlineSubtasks,
+  .taskSubtaskToggle,
+  .taskGroupDragOver,
+  .filterMenu[open] .filterPanel,
+  .statusMessage,
+  .emptyState,
+  .inlineComposer,
+  .datePopover,
+  .priorityMenu,
+  .taskDialog,
+  .taskDialog::backdrop,
+  .taskActionsMenu,
+  .taskToast,
+  .taskToastClosing,
+  .taskToastTimer,
+  .deleteConfirmDialog,
+  .checkboxCompleted,
+  .taskViewActive .viewCount {
+    animation: none;
+  }
+
+  .taskToastTimer {
+    animation-duration: 0.01ms;
+  }
+
+  .filterButton,
+  .newTaskButton,
+  .taskView,
+  .viewCount,
+  .viewTotal,
+  .autoSchedule,
+  .taskRow,
+  .checkbox,
+  .taskTitle,
+  .composerCancel,
+  .composerSubmit,
+  .calendarDay {
+    transition-duration: 0.01ms;
+  }
+}

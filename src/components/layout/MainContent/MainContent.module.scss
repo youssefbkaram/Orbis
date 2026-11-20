@@ -1,0 +1,27 @@
+.main {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.content {
+  width: min(100%, 1120px);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 42px 40px 56px;
+}
+
+@media (max-width: 900px) {
+  .content {
+    padding: 32px 24px 44px;
+  }
+}
+
+@media (max-width: 600px) {
+  .content {
+    padding: 26px 16px 36px;
+  }
+}

@@ -1,0 +1,22 @@
+.notice {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--muted);
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 1.5;
+
+  &[data-kind="error"] {
+    border-color: color-mix(in oklch, var(--destructive) 28%, var(--border));
+    background: color-mix(in oklch, var(--destructive) 8%, var(--background));
+    color: var(--destructive);
+  }
+
+  &[data-kind="success"] {
+    border-color: color-mix(in oklch, oklch(0.65 0.16 150) 30%, var(--border));
+    background: color-mix(in oklch, oklch(0.65 0.16 150) 8%, var(--background));
+    color: oklch(0.42 0.12 150);
+  }
+}
