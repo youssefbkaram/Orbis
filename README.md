@@ -28,6 +28,22 @@ Zod, Drizzle ORM, Neon PostgreSQL, and Better Auth.
 
 8. Start the app with `npm run dev`.
 
+## Deploying to Vercel
+
+Import `youssefbkaram/Orbis` as a Next.js project and set these environment
+variables for Production, Preview, and Development:
+
+- `DATABASE_URL` — the Neon PostgreSQL connection string.
+- `BETTER_AUTH_SECRET` — a private, high-entropy secret.
+- `BETTER_AUTH_URL` — the deployed app's HTTPS origin.
+
+Apply the migrations to the Neon database with `npm run db:migrate` before
+using the app. Google sign-in additionally needs `GOOGLE_CLIENT_ID` and
+`GOOGLE_CLIENT_SECRET`, with the production callback URL
+`<BETTER_AUTH_URL>/api/auth/callback/google`. Email verification and password
+recovery require all five `SMTP_*` variables; without them, email/password
+sign-in and sign-up remain available, but those email features are disabled.
+
 Authentication pages are available at `/sign-in` and `/sign-up`. The workspace
 is protected by a server-side session check. Better Auth handles password
 hashing, OAuth state and callback validation, session cookies, verification
